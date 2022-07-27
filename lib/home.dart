@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 30, fontWeight: FontWeight.w500),
                       ),
                     ),
-                    TodoItem(),
+                    TodoItem(data: "gfgfg gd xg", isComplete: true),
                   ],
                 ),
               )

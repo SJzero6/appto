@@ -5,7 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TodoItem extends StatelessWidget {
-  const TodoItem({Key? key}) : super(key: key);
+  const TodoItem({Key? key, required this.data, this.isComplete = false})
+      : super(key: key);
+  final String data;
+  final bool isComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +19,14 @@ class TodoItem extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         tileColor: Colors.white,
-        leading: Icon(Icons.check_box, color: Color.fromARGB(255, 9, 82, 240)),
-        title: Text('check mail',
+        leading: Icon(
+            isComplete ? Icons.check_box : Icons.check_box_outline_blank,
+            color: Color.fromARGB(255, 9, 82, 240)),
+        title: Text(data,
             style: TextStyle(
                 fontSize: 16,
                 color: Colors.black,
-                decoration: TextDecoration.lineThrough)),
+                decoration: isComplete ? TextDecoration.lineThrough : null)),
         trailing: Container(
           padding: EdgeInsets.all(0),
           margin: EdgeInsets.symmetric(vertical: 12),
