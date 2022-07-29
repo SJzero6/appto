@@ -1,6 +1,7 @@
 import 'package:appto/home.dart';
 // import 'package:appto/splash.dart';
 import 'package:appto/providers/todo_provider.dart';
+import 'package:appto/splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,6 @@ class MyApp extends StatelessWidget {
     // ignore: prefer_const_constructors
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => TodoProvider())
-    ], child: MaterialApp(title: 'ToDo App', home: HomePage()));
+    ], child: MaterialApp(title: 'ToDo App', home: Splash()));
   }
 }

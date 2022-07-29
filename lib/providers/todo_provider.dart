@@ -28,6 +28,13 @@ class TodoProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void updateTodo(String id, String updatedData) {
+    Todo upTodo = _todolist.singleWhere((element) => element.id == id);
+    upTodo.data = updatedData;
+
+    notifyListeners();
+  }
+
   //Search query
   String _searchQuery = "";
 
@@ -50,6 +57,23 @@ class TodoProvider with ChangeNotifier {
   clearSearch() {
     _searchQuery = "";
     _searchResults.clear();
+
+    notifyListeners();
+  }
+
+  //id of todo that is being edited
+  String? _editingTodoId;
+
+  String? get editingTodoId => _editingTodoId;
+
+  set editingTodoId(String? id) {
+    _editingTodoId = id;
+
+    notifyListeners();
+  }
+
+  clearEditingTodoId() {
+    _editingTodoId = null;
 
     notifyListeners();
   }

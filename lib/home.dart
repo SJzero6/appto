@@ -47,6 +47,8 @@ class _HomePageState extends State<HomePage> {
     todo_provider.completeTodo(id);
   }
 
+  _handleUpdateTodo(id, updation) {}
+
   @override
   Widget build(BuildContext context) {
     TodoProvider todo_provider = Provider.of<TodoProvider>(context);
@@ -80,48 +82,51 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: Container(
-                  margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 5,
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: const [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0.0, 0.0),
-                            blurRadius: 10.0,
-                            spreadRadius: 0.0)
-                      ],
-                      borderRadius: BorderRadius.circular(10)),
-                  child: TextField(
-                    controller: _tcontroller,
-                    decoration: InputDecoration(
-                        hintText: 'add a new todo item',
-                        border: InputBorder.none),
-                  ),
-                )),
-                Container(
-                    margin: EdgeInsets.only(bottom: 20, right: 20),
-                    // child: ElevatedButton(
-                    //     onPressed: () {},
-                    //     child: Text('+'),
-                    //     style: ElevatedButton.styleFrom(
-                    //       minimumSize: Size(60, 60),
-                    //       elevation: 10,
-                    //     )),
+            todo_provider.editingTodoId == null
+                ? Row(
+                    children: [
+                      Expanded(
+                          child: Container(
+                        margin:
+                            EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0.0, 0.0),
+                                  blurRadius: 10.0,
+                                  spreadRadius: 0.0)
+                            ],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: TextField(
+                          controller: _tcontroller,
+                          decoration: InputDecoration(
+                              hintText: 'add a new todo item',
+                              border: InputBorder.none),
+                        ),
+                      )),
+                      Container(
+                          margin: EdgeInsets.only(bottom: 20, right: 20),
+                          // child: ElevatedButton(
+                          //     onPressed: () {},
+                          //     child: Text('+'),
+                          //     style: ElevatedButton.styleFrom(
+                          //       minimumSize: Size(60, 60),
+                          //       elevation: 10,
+                          //     )),
 
-                    child: FloatingActionButton.extended(
-                      onPressed: _handleAddtodo,
-                      label: Icon(Icons.add),
-                    ))
-              ],
-            ),
+                          child: FloatingActionButton.extended(
+                            onPressed: _handleAddtodo,
+                            label: Icon(Icons.add),
+                          ))
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),
@@ -138,6 +143,7 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
+        enabled: todo_provider.editingTodoId == null,
         controller: _searchController,
         onChanged: (value) => todo_provider.searchTodos(value),
         decoration: InputDecoration(
