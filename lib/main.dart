@@ -19,8 +19,13 @@ class MyApp extends StatelessWidget {
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
     // ignore: prefer_const_constructors
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => TodoProvider())
-    ], child: MaterialApp(title: 'ToDo App', home: Splash()));
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => TodoProvider())
+        ],
+        child: MaterialApp(
+          title: 'ToDo App',
+          home: Splash(),
+        ));
   }
 }
