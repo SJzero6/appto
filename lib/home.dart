@@ -19,6 +19,14 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController =
       TextEditingController(text: "");
 
+  @override
+  void initState() {
+    TodoProvider todoProvider =
+        Provider.of<TodoProvider>(context, listen: false);
+    todoProvider.loadTodos();
+    super.initState();
+  }
+
   void _handleAddtodo() {
     if (_tcontroller.text.isEmpty) {
       ScaffoldMessenger.of(context)

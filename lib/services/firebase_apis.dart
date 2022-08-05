@@ -3,15 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseApis {
-  static addTodo(
-      {required String id,
-      required String data,
-      required bool isComplete}) async {
-    FirebaseFirestore.instance.collection('todos').add({
-      'id': id,
+  static addTodo({required String data, required bool isComplete}) async {
+    String firebaseId = "";
+    await FirebaseFirestore.instance.collection('todos').add({
       'data': data,
       'isComplete': isComplete,
+    }).then((doc) {
+      firebaseId = doc.id;
     });
+
+    return firebaseId;
   }
 
   static Future<List<Todo>> loadTodos() async {
@@ -21,14 +22,35 @@ class FirebaseApis {
         .get()
         .then((querysnapshot) {
       for (var element in querysnapshot.docs) {
-        element.id
         todos.add(Todo(
-            id: element['id'],
+            id: element.id,
             data: element['data'],
             isComplete: element['isComplete']));
       }
     });
 
     return todos;
+  }
+
+  static deleteTodo(String id) async {
+    await FirebaseFirestore.instance.collection('todos').doc(id).delete();
+  }
+
+  static updateTodo({
+    required String id,
+    required String data,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection('todos')
+        .doc(id)
+        .update({'data': data});
+  }
+
+  static changeIscompleteTodo(
+      {required String id, required bool isComplete}) async {
+    await FirebaseFirestore.instance
+        .collection('todos')
+        .doc(id)
+        .update({'isComplete': isComplete});
   }
 }

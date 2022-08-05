@@ -1,34 +1,39 @@
 import 'package:appto/models/todo.dart';
+import 'package:appto/services/firebase_apis.dart';
 import 'package:flutter/material.dart';
 
 class TodoProvider with ChangeNotifier {
-  final List<Todo> _todolist = [];
+  List<Todo> _todolist = [];
 
   List<Todo> get todolist => _todolist;
 
-  void addtodo(String title) {
-    String id =
-        "${_todolist.length.toString()}${DateTime.now().millisecondsSinceEpoch}";
+  void addtodo(String title) async {
+    String id = await FirebaseApis.addTodo(data: title, isComplete: false);
 
-    _todolist.add(Todo(id: id, data: title));
+    _todolist.add(Todo(id: id, data: title, isComplete: false));
     notifyListeners();
   }
 
-  void removeTodo(String id) {
+  void removeTodo(String id) async {
+    await FirebaseApis.deleteTodo(id);
     _todolist.removeWhere((todo) => todo.id == id);
 
     notifyListeners();
   }
 
-  void completeTodo(String id) {
+  void completeTodo(String id) async {
     Todo currentTodo = _todolist.singleWhere((element) => element.id == id);
 
     currentTodo.isComplete = !currentTodo.isComplete;
 
+    await FirebaseApis.changeIscompleteTodo(
+        id: id, isComplete: currentTodo.isComplete);
+
     notifyListeners();
   }
 
-  void updateTodo(String id, String updatedData) {
+  void updateTodo(String id, String updatedData) async {
+    await FirebaseApis.updateTodo(id: id, data: updatedData);
     Todo upTodo = _todolist.singleWhere((element) => element.id == id);
     upTodo.data = updatedData;
 
@@ -74,6 +79,12 @@ class TodoProvider with ChangeNotifier {
 
   clearEditingTodoId() {
     _editingTodoId = null;
+
+    notifyListeners();
+  }
+
+  loadTodos() async {
+    _todolist = await FirebaseApis.loadTodos();
 
     notifyListeners();
   }
