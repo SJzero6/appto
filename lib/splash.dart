@@ -1,3 +1,4 @@
+import 'package:appto/loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:appto/home.dart';
@@ -20,7 +21,7 @@ class _SplashState extends State<Splash> {
   _navigatetohome() {
     Future.delayed(const Duration(milliseconds: 2500), () {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
+          context, MaterialPageRoute(builder: (context) => login()));
     });
   }
 

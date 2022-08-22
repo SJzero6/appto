@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:appto/home.dart';
 // import 'package:appto/splash.dart';
 import 'package:appto/providers/todo_provider.dart';
