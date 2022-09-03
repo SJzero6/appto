@@ -37,6 +37,7 @@ class _loginState extends State<login> {
                 padding: const EdgeInsets.all(15),
                 child: TextField(
                   controller: _emailtextcontroller,
+                  keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.mail),

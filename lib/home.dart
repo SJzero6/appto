@@ -182,15 +182,7 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       backgroundColor: Colors.grey[800],
       elevation: 5,
-      title: Row(
-        children: const [
-          Icon(
-            Icons.menu,
-            color: Colors.white,
-            size: 30,
-          )
-        ],
-      ),
+      
       actions: [
         PopupMenuButton(
             itemBuilder: (context) => [

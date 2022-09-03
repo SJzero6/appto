@@ -1,13 +1,15 @@
 import 'package:appto/models/todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseApis {
-  static addTodo({required String data, required bool isComplete}) async {
+  static addTodo({required String data, required bool isComplete, required String userId}) async {
     String firebaseId = "";
     await FirebaseFirestore.instance.collection('todos').add({
       'data': data,
       'isComplete': isComplete,
+      'userId' : userId,
     }).then((doc) {
       firebaseId = doc.id;
     });
@@ -19,12 +21,14 @@ class FirebaseApis {
     List<Todo> todos = [];
     await FirebaseFirestore.instance
         .collection('todos')
+        .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .get()
         .then((querysnapshot) {
       for (var element in querysnapshot.docs) {
         todos.add(Todo(
             id: element.id,
             data: element['data'],
+            userId: element['userId'],
             isComplete: element['isComplete']));
       }
     });

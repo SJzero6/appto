@@ -36,6 +36,7 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.all(15),
                 child: TextField(
                   controller: _emailtextcontroller,
+                  keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     suffixIcon: Icon(Icons.mail),
@@ -51,6 +52,7 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.all(15),
                 child: TextField(
                   controller: _passwordtextcontroller,
+                  obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                       suffixIcon: Icon(Icons.key),
@@ -62,9 +64,10 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.all(15),
                 child: TextField(
                   controller: _confirmpasscontroller,
+                  obscureText: true,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
-                      // suffixIcon: Icon(Icons.key),
+                      suffixIcon: Icon(Icons.key),
                       border: OutlineInputBorder(),
                       hintText: 'password'),
                 ),

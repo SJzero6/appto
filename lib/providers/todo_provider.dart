@@ -1,5 +1,6 @@
 import 'package:appto/models/todo.dart';
 import 'package:appto/services/firebase_apis.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TodoProvider with ChangeNotifier {
@@ -8,9 +9,12 @@ class TodoProvider with ChangeNotifier {
   List<Todo> get todolist => _todolist;
 
   void addtodo(String title) async {
-    String id = await FirebaseApis.addTodo(data: title, isComplete: false);
 
-    _todolist.add(Todo(id: id, data: title, isComplete: false));
+    String uid = FirebaseAuth.instance.currentUser!.uid;
+
+    String id = await FirebaseApis.addTodo(data: title, isComplete: false, userId: uid);
+
+    _todolist.add(Todo(id: id, data: title, isComplete: false, userId: uid));
     notifyListeners();
   }
 
