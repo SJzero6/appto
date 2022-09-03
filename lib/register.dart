@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
@@ -73,19 +76,70 @@ class _RegisterState extends State<Register> {
                       minimumSize: Size.fromHeight(50),
                     ),
                     icon: Icon(Icons.lock),
-                    label: Text('Sign in'),
-                    onPressed: () {}),
+                    label: Text('Sign Up'),
+                    onPressed: _handleRegister),
               ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: ((context) => Register())));
-                  },
-                  child: Text('NEW USER ? REGISTER HERE !'))
             ],
           ),
         ),
       )),
     );
+  }
+
+  _handleRegister() async {
+    if (_emailtextcontroller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Email is required'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    RegExp emailRegExp = RegExp(
+        r'^[a-zA-Z0-9.a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+    if (!emailRegExp.hasMatch(_emailtextcontroller.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email is not valid'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (_passwordtextcontroller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password is required'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    if (_confirmpasscontroller.text != _passwordtextcontroller.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailtextcontroller.text.trim(),
+        password: _passwordtextcontroller.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message ?? "")));
+      return;
+    }
+
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
   }
 }

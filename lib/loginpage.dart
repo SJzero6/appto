@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:math';
-
 import 'package:appto/home.dart';
 import 'package:appto/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -75,7 +73,7 @@ class _loginState extends State<login> {
               ),
               TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
+                    Navigator.push(context,
                         MaterialPageRoute(builder: ((context) => Register())));
                   },
                   child: Text('NEW USER ? REGISTER HERE !'))
@@ -87,9 +85,49 @@ class _loginState extends State<login> {
   }
 
   signin() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailtextcontroller.text.trim(),
-      password: _passwordtextcontroller.text.trim(),
-    );
+    if (_emailtextcontroller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Email is required'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    RegExp emailRegExp = RegExp(
+        r'^[a-zA-Z0-9.a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+');
+    if (!emailRegExp.hasMatch(_emailtextcontroller.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email is not valid'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    if (_passwordtextcontroller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password is required'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailtextcontroller.text.trim(),
+        password: _passwordtextcontroller.text.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message ?? "")));
+      return;
+    }
+
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
   }
 }

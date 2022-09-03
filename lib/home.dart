@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, unused_local_variable
 
+import 'package:appto/loginpage.dart';
 import 'package:appto/providers/todo_provider.dart';
 import 'package:appto/widgets/todo_item.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -189,6 +191,23 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+      actions: [
+        PopupMenuButton(
+            itemBuilder: (context) => [
+                  PopupMenuItem(
+                      onTap: () async {
+                        await FirebaseAuth.instance.signOut();
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => login()),
+                            (route) => false);
+                      },
+                      enabled: true,
+                      height: 20,
+                      child: Text("Logout"))
+                ])
+      ],
     );
   }
 }
